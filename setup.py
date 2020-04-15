@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 
 
-def python_version_check():
+def python_version_check(major=3,minor=6):
     import sys
 
-    assert sys.version_info.major == 3 and sys.version_info.minor >= 6, (
-        f"This project is utilises language features only present Python 3.6 and greater. "
+    assert sys.version_info.major == major and sys.version_info.minor >= minor, (
+        f"This project is utilises language features only present Python {major}.{minor} and greater. "
         f"You are running {sys.version_info}."
     )
 
@@ -28,8 +28,11 @@ with open(
     project_name = re.search(
         r"PROJECT_NAME = ['\"]([^'\"]*)['\"]", content, re.M
     ).group(1)
-
-__author__ = "cnheider"
+    author = re.search(r"__author__ = ['\"]([^'\"]*)['\"]",
+                      content,
+                      re.M).group(
+      1)  # get version string from module
+__author__ = author
 
 
 class ProjectNamePackage:
@@ -63,7 +66,7 @@ class ProjectNamePackage:
 
     @property
     def url(self) -> str:
-        return "https://github.com/cnheider/draugr"
+        return "https://github.com/user/PythonTestPackage"
 
     @property
     def download_url(self) -> str:
@@ -76,18 +79,18 @@ class ProjectNamePackage:
     @property
     def packages(self):
         return find_packages(
-            exclude=[
-                # 'neodroid/environments'
-            ]
+        exclude=[
+          # 'Path/To/Exclude'
+          ]
         )
 
     @property
     def author_name(self):
-        return "Christian Heider Nielsen"
+      return author
 
     @property
     def author_email(self):
-        return "christian.heider@alexandra.dk"
+        return "name@domain.xx"
 
     @property
     def maintainer_name(self):
@@ -99,16 +102,12 @@ class ProjectNamePackage:
 
     @property
     def package_data(self):
-        # data = glob.glob('environments/mab/**', recursive=True)
+        # data = glob.glob('data/', recursive=True)
         return {
-            # 'neodroid':[
-            # *data
-            # 'environments/mab/**',
-            # 'environments/mab/**_Data/*',
-            # 'environments/mab/windows/*'
-            # 'environments/mab/windows/*_Data/*'
-            #  ]
-        }
+          # 'PackageName':[
+          # *data
+          #  ]
+          }
 
     @property
     def entry_points(self):
@@ -122,16 +121,16 @@ class ProjectNamePackage:
     def extras(self):
 
         path = pathlib.Path(__file__).parent
-        requirements_writers = []
-        with open(path / "requirements_writers.txt") as f:
+        requirements_xx = []
+        with open(path / "requirements_xx.txt") as f:
             requirements = f.readlines()
 
             for requirement in requirements:
-                requirements_writers.append(requirement.strip())
+                requirements_xx.append(requirement.strip())
 
         these_extras = {
             # 'ExtraGroupName':['package-name; platform_system == "System(Linux,Windows)"'
-            "writers": requirements_writers
+            "xx": requirements_xx
         }
 
         all_dependencies = []
@@ -155,7 +154,7 @@ class ProjectNamePackage:
 
     @property
     def description(self):
-        return "A package for plotting directly in your terminal"
+        return "Short descriptioon"
 
     @property
     def readme(self):
@@ -221,5 +220,5 @@ if __name__ == "__main__":
         long_description=pkg.readme,
         tests_require=pkg.test_dependencies,
         include_package_data=True,
-        python_requires=">=3",
+        python_requires=">=3.6",
     )
