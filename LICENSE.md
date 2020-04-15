@@ -186,7 +186,7 @@
       same "printed page" as the copyright notice for easier
       identification within third-party archives.
 
-    Copyright 2018 Christian Heider Nielsen
+    Copyright 2020 Christian Heider Nielsen
 
 
    Licensed under the Apache License, Version 2.0 (the "License");

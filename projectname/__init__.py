@@ -2,13 +2,16 @@
 # -*- coding: utf-8 -*-
 import datetime
 import os
+from warnings import warn
 
 import pkg_resources
-from pip._internal.utils.misc import dist_is_editable
+import sys
+from pathlib import Path
 
 from apppath import AppPath
 
-__author__ = "cnheider"
+__project__ = "PackageTemplate"
+__author__ = "Christian Heider Nielsen"
 __version__ = "0.0.1"
 __doc__ = """
 Created on 27/04/2019
@@ -16,21 +19,23 @@ Created on 27/04/2019
 @author: cnheider
 """
 
-'''
+
 def dist_is_editable(dist):
-    # type: (Distribution) -> bool
     """
-    Return True if given Distribution is an editable install.
-    """
+  Return True if given Distribution is an editable install.
+  """
+    import sys
+    from pathlib import Path
+
     for path_item in sys.path:
-        egg_link = os.path.join(path_item, dist.project_name + '.egg-link')
-        if os.path.isfile(egg_link):
+        egg_link = Path(path_item) / f"{dist.project_name}.egg-link"
+        if egg_link.is_file():
             return True
     return False
-'''
 
-PROJECT_NAME = "ProjectName"
-PROJECT_AUTHOR = __author__
+
+PROJECT_NAME = __project__.lower().strip().replace(" ", "_")
+PROJECT_AUTHOR = __author__.lower().strip().replace(" ", "_")
 PROJECT_APP_PATH = AppPath(app_name=PROJECT_NAME, app_author=PROJECT_AUTHOR)
 
 distributions = {v.key: v for v in pkg_resources.working_set}
@@ -86,4 +91,3 @@ if __version__ is None:
     __version__ = get_version(append_time=True)
 
 __version_info__ = tuple(int(segment) for segment in __version__.split("."))
-
