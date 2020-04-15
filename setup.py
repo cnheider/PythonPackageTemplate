@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-def python_version_check(major=3,minor=6):
+def python_version_check(major=3, minor=6):
     import sys
 
     assert sys.version_info.major == major and sys.version_info.minor >= minor, (
@@ -28,10 +28,9 @@ with open(
     project_name = re.search(
         r"PROJECT_NAME = ['\"]([^'\"]*)['\"]", content, re.M
     ).group(1)
-    author = re.search(r"__author__ = ['\"]([^'\"]*)['\"]",
-                      content,
-                      re.M).group(
-      1)  # get version string from module
+    author = re.search(r"__author__ = ['\"]([^'\"]*)['\"]", content, re.M).group(
+        1
+    )  # get version string from module
 __author__ = author
 
 
@@ -79,14 +78,14 @@ class ProjectNamePackage:
     @property
     def packages(self):
         return find_packages(
-        exclude=[
-          # 'Path/To/Exclude'
-          ]
+            exclude=[
+                # 'Path/To/Exclude'
+            ]
         )
 
     @property
     def author_name(self):
-      return author
+        return author
 
     @property
     def author_email(self):
@@ -104,10 +103,10 @@ class ProjectNamePackage:
     def package_data(self):
         # data = glob.glob('data/', recursive=True)
         return {
-          # 'PackageName':[
-          # *data
-          #  ]
-          }
+            # 'PackageName':[
+            # *data
+            #  ]
+        }
 
     @property
     def entry_points(self):
