@@ -25,9 +25,9 @@ with open(
     # get version string from module
     version = re.search(r"__version__ = ['\"]([^'\"]*)['\"]", content, re.M).group(1)
 
-    project_name = re.search(
-        r"PROJECT_NAME = ['\"]([^'\"]*)['\"]", content, re.M
-    ).group(1)
+    project_name = re.search(r"__project__ = ['\"]([^'\"]*)['\"]", content, re.M).group(
+        1
+    )
     author = re.search(r"__author__ = ['\"]([^'\"]*)['\"]", content, re.M).group(
         1
     )  # get version string from module
