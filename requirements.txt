@@ -1,4 +1,1 @@
-apppath
-warg
-draugr
-six
+devpack
