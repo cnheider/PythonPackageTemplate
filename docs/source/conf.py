@@ -19,8 +19,10 @@
 #
 import os
 import sys
+from pathlib import Path
 
-sys.path.insert(0, os.path.abspath("."))
+PACKAGE_ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(PACKAGE_ROOT.absolute()))
 
 # -- General configuration ------------------------------------------------
 
@@ -69,7 +71,7 @@ source_suffix = {".rst": "restructuredtext", ".txt": "markdown", ".md": "markdow
 master_doc = "index"
 
 # General information about the project.
-project = "Agent"
+project = "PythonPackageTemplate"
 author = "Christian Heider Nielsen"
 copyright = f"2017, {author}"
 
@@ -116,12 +118,12 @@ html_theme = "alabaster"
 # so a file named 'default.css' will overwrite the builtin 'default.css'.
 html_static_path = ["_static"]
 
-html_baseurl = "agent.neodroid.ml"
+html_baseurl = "python_package_template.cnheider.github.io"
 
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "Agentdoc"
+htmlhelp_basename = "PythonPackageTemplatedoc"
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -157,7 +159,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [(master_doc, "agent", "Agent Documentation", [author], 1)]
+man_pages = [(master_doc, "python_package_template", "PythonPackageTemplate Documentation", [author], 1)]
 
 # -- Options for Texinfo output -------------------------------------------
 

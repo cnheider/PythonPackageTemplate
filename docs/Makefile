@@ -4,7 +4,7 @@
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
-SPHINXPROJ    = Agent
+SPHINXPROJ    = PythonPackageTemplate
 SOURCEDIR     = source
 BUILDDIR      = ../docs/github
 PYCMD 				= python
