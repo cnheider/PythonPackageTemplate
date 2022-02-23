@@ -62,7 +62,7 @@ def read_reqs(file: str, path: pathlib.Path) -> List[str]:
     return list(req_set)
 
 with open(
-    pathlib.Path(__file__).parent / "munin_plugin_prc" / "__init__.py", "r"
+    pathlib.Path(__file__).parent / "projectname" / "__init__.py", "r"
 ) as project_init_file:
     content = project_init_file.read()
     # get version string from module
@@ -190,7 +190,7 @@ class ProjectNamePackage:
 
     @property
     def description(self):
-        return "Short descriptioon"
+        return "Short description"
 
     @property
     def readme(self):
