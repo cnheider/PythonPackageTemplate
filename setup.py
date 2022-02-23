@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+from typing import Sequence, List
 
 
 def python_version_check(major=3, minor=6):
@@ -18,8 +19,50 @@ import re
 
 from setuptools import find_packages, setup
 
+
+
+def read_reqs(file: str, path: pathlib.Path) -> List[str]:
+    """"""
+
+    def readlines_ignore_comments(f):
+        """"""
+        return [a_ for a_ in f.readlines() if "#" not in a_ and a_]
+
+    def recursive_flatten_ignore_str(seq: Sequence) -> Sequence:
+        """"""
+        if not seq:  # is empty Sequence
+            return seq
+        if isinstance(seq[0], str):
+            return seq
+        if isinstance(seq[0], Sequence):
+            return (
+                *recursive_flatten_ignore_str(seq[0]),
+                *recursive_flatten_ignore_str(seq[1:]),
+            )
+        return (*seq[:1], *recursive_flatten_ignore_str(seq[1:]))
+
+    def unroll_nested_reqs(req_str: str, base_path: pathlib.Path):
+        """"""
+        if req_str.startswith("-r"):
+            with open(base_path / req_str.strip("-r").strip()) as f:
+                return [unroll_nested_reqs(req.strip(), base_path) for req in readlines_ignore_comments(f)]
+        else:
+            return (req_str,)
+
+    requirements_group = []
+    with open(str(path / file)) as f:
+        requirements = readlines_ignore_comments(f)
+        for requirement in requirements:
+            requirements_group.extend(
+                recursive_flatten_ignore_str(unroll_nested_reqs(requirement.strip(), path))
+            )
+
+    req_set = set(requirements_group)
+    req_set.discard("")
+    return list(req_set)
+
 with open(
-    pathlib.Path(__file__).parent / "projectname" / "__init__.py", "r"
+    pathlib.Path(__file__).parent / "munin_plugin_prc" / "__init__.py", "r"
 ) as project_init_file:
     content = project_init_file.read()
     # get version string from module
@@ -39,7 +82,7 @@ class ProjectNamePackage:
     def test_dependencies(self) -> list:
         path = pathlib.Path(__file__).parent
         requirements_tests = []
-        with open(path / "requirements_tests.txt") as f:
+        with open(path/'requirements' / "requirements_tests.txt") as f:
             requirements = f.readlines()
 
             for requirement in requirements:
@@ -51,7 +94,7 @@ class ProjectNamePackage:
     def setup_dependencies(self) -> list:
         path = pathlib.Path(__file__).parent
         requirements_setup = []
-        with open(path / "requirements_setup.txt") as f:
+        with open(path /'requirements'/ "requirements_setup.txt") as f:
             requirements = f.readlines()
 
             for requirement in requirements:
@@ -102,7 +145,7 @@ class ProjectNamePackage:
     @property
     def package_data(self):
         emds = [str(p) for p in pathlib.Path(__file__).parent.rglob(".md")]
-        return {"projectname": [*emds]}
+        return {"munin_plugin_prc": [*emds]}
 
     @property
     def entry_points(self):
@@ -113,28 +156,24 @@ class ProjectNamePackage:
         }
 
     @property
-    def extras(self):
-
-        path = pathlib.Path(__file__).parent
-        """
-    requirements_xx = []
-    with open(path / "requirements_xx.txt") as f:
-      requirements = f.readlines()
-
-      for requirement in requirements:
-        requirements_xx.append(requirement.strip())
-    """
-
+    def extras(self) -> dict:
+        """"""
         these_extras = {
-            # 'ExtraGroupName':['package-name; platform_system == "System(Linux,Windows)"'
-            # "xx":requirements_xx
+            # 'ExtraName':['package-name; platform_system == "System(Linux,Windows)"'
         }
+
+        path: pathlib.Path = pathlib.Path(__file__).parent / "requirements"
+
+        for file in path.iterdir():
+            if file.name.startswith("requirements_"):
+                group_name_ = "_".join(file.name.strip(".txt").split("_")[1:])
+                these_extras[group_name_] = read_reqs(file.name, path)
 
         all_dependencies = []
 
         for group_name in these_extras:
             all_dependencies += these_extras[group_name]
-        these_extras["all"] = all_dependencies
+        these_extras["all"] = list(set(all_dependencies))
 
         return these_extras
 

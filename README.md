@@ -1,5 +1,5 @@
 # ProjectName
 
 ```bash
-pip install projectname
+pip install munin_plugin_prc
 ```
